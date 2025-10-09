@@ -117,6 +117,11 @@ lazy_static::lazy_static! {
         map.insert("allow-hide-cm".to_string(), "Y".to_string());
         //隐藏托盘图标，approve-mode=password，verification-method=use-permanent-password，才可生效，项目中有修复代码
         map.insert("hide-tray".to_string(), "Y".to_string());
+        // power by me
+        map.insert("hide-powered-by-me".to_string(), "Y".to_string());
+        // 质量监视
+        map.insert("show_quality_monitor".to_string(), "Y".to_string());
+
         RwLock::new(map)
     };
     pub static ref OVERWRITE_SETTINGS: RwLock<HashMap<String, String>> = Default::default();
