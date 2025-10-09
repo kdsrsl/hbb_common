@@ -43,7 +43,7 @@ pub const ENCRYPT_MAX_LEN: usize = 128; // used for password, pin, etc, not for 
 
 #[cfg(target_os = "macos")]
 lazy_static::lazy_static! {
-    pub static ref ORG: RwLock<String> = RwLock::new("com.carriez".to_owned());
+    pub static ref ORG: RwLock<String> = RwLock::new("dc.test".to_owned());
 }
 
 type Size = (i32, i32, i32, i32);
@@ -79,7 +79,7 @@ lazy_static::lazy_static! {
         //ID服务器，该配置部分客户端生效，读取Repository secrets值
         map.insert(
             "custom-rendezvous-server".to_string(), 
-            option_env!("RENDEZVOUS_SERVER").unwrap_or("rs.google.com").into()
+            option_env!("CUSTOM_RENDEZVOUS_SERVER").unwrap_or("rs.google.com").into()
         );
         //中继服务器，读取Repository secrets值
         map.insert(
@@ -117,6 +117,8 @@ lazy_static::lazy_static! {
         map.insert("allow-hide-cm".to_string(), "Y".to_string());
         //隐藏托盘图标，approve-mode=password，verification-method=use-permanent-password，才可生效，项目中有修复代码
         map.insert("hide-tray".to_string(), "Y".to_string());
+        //控制是否在GUI上显示UAC/权限警告
+        // map.insert("hide-help-cards".to_string(), "Y".to_string());
         // power by me
         map.insert("hide-powered-by-me".to_string(), "Y".to_string());
         // 质量监视
@@ -152,6 +154,8 @@ lazy_static::lazy_static! {
         map.insert("disable-discovery-panel".to_string(), "Y".to_string());
         //默认提权运行
         map.insert("pre-elevate-service".to_string(), "Y".to_string());
+        // power by me
+        map.insert("hide-powered-by-me".to_string(), "Y".to_string());
         RwLock::new(map)
     };
     pub static ref OVERWRITE_LOCAL_SETTINGS: RwLock<HashMap<String, String>> = Default::default();
@@ -173,6 +177,13 @@ lazy_static::lazy_static! {
             "default-connect-password".to_string(), 
             option_env!("DEFAULT_PASSWORD").unwrap_or("").into()
         );
+        //配置大
+        // hide-security-settings / hide-network-settings / 
+        // hide-server-settings / hide-proxy-settings / 
+        // hide-websocket-settings / hide-remote-printer-settings 
+        map.insert("hide-security-settings".to_string(), "Y".to_string());
+        map.insert("hide-network-settings".to_string(), "Y".to_string());
+        map.insert("hide-remote-printer-settings".to_string(), "Y".to_string());
         RwLock::new(map)
     };
 }

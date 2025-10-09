@@ -10,6 +10,7 @@ fn set_env(key: &str) {
 fn main() {
     //使用定义的方法获取Repository secrets到编译环境
     set_env("APP_NAME");
+    set_env("CUSTOM_RENDEZVOUS_SERVER");
     set_env("RENDEZVOUS_SERVER");
     set_env("RELAY_SERVER");
     set_env("API_SERVER");
