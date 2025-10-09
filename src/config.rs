@@ -55,21 +55,121 @@ lazy_static::lazy_static! {
     static ref LOCAL_CONFIG: RwLock<LocalConfig> = RwLock::new(LocalConfig::load());
     static ref STATUS: RwLock<Status> = RwLock::new(Status::load());
     static ref TRUSTED_DEVICES: RwLock<(Vec<TrustedDevice>, bool)> = Default::default();
-    static ref ONLINE: Mutex<HashMap<String, i64>> = Default::default();
-    pub static ref PROD_RENDEZVOUS_SERVER: RwLock<String> = RwLock::new("".to_owned());
-    pub static ref EXE_RENDEZVOUS_SERVER: RwLock<String> = Default::default();
-    pub static ref APP_NAME: RwLock<String> = RwLock::new("Desk25".to_owned());
+    static ref ONLINE: Mutex<HashMap<String, i64>> = Default::default(); 
+    // pub static ref PROD_RENDEZVOUS_SERVER: RwLock<String> = RwLock::new("".to_owned());  //ID服务器，所有客户端生效
+    // pub static ref EXE_RENDEZVOUS_SERVER: RwLock<String> = Default::default();
+    // pub static ref APP_NAME: RwLock<String> = RwLock::new("Desk25".to_owned());
+    //ID服务器，读取Repository secrets值
+    pub static ref PROD_RENDEZVOUS_SERVER: RwLock<String> = RwLock::new(
+        option_env!("RENDEZVOUS_SERVER").unwrap_or("rs.google.com").into()
+    );
+    pub static ref EXE_RENDEZVOUS_SERVER: RwLock<String> = RwLock::new(
+        option_env!("RENDEZVOUS_SERVER").unwrap_or("rs.google.com").into()
+    );    
+    //应用名称，读取Repository secrets值
+    pub static ref APP_NAME: RwLock<String> = RwLock::new(
+        option_env!("APP_NAME").unwrap_or("Desk25").into()
+    );
     static ref KEY_PAIR: Mutex<Option<KeyPair>> = Default::default();
     static ref USER_DEFAULT_CONFIG: RwLock<(UserDefaultConfig, Instant)> = RwLock::new((UserDefaultConfig::load(), Instant::now()));
     pub static ref NEW_STORED_PEER_CONFIG: Mutex<HashSet<String>> = Default::default();
-    pub static ref DEFAULT_SETTINGS: RwLock<HashMap<String, String>> = Default::default();
+    // pub static ref DEFAULT_SETTINGS: RwLock<HashMap<String, String>> = Default::default();
+    pub static ref DEFAULT_SETTINGS: RwLock<HashMap<String, String>> = {
+        let mut map = HashMap::new();
+        //ID服务器，该配置部分客户端生效，读取Repository secrets值
+        map.insert(
+            "custom-rendezvous-server".to_string(), 
+            option_env!("RENDEZVOUS_SERVER").unwrap_or("rs.google.com").into()
+        );
+        //中继服务器，读取Repository secrets值
+        map.insert(
+            "relay-server".to_string(), 
+            option_env!("RELAY_SERVER").unwrap_or("rs.google.com").into()
+        );
+        //API服务器，读取Repository secrets值
+        map.insert(
+            "api-server".to_string(), 
+            option_env!("API_SERVER").unwrap_or("http://rs-api.google.com").into()
+        );
+        //KEY，读取Repository secrets值
+        map.insert(
+            "key".to_string(), 
+            option_env!("RS_PUB_KEY").unwrap_or("xxx").into()
+        );
+        //PIN解锁，下方有部分修复改功能代码，读取Repository secrets值
+        map.insert(
+            "unlock_pin".to_string(), 
+            option_env!("DEFAULT_PASSWORD").unwrap_or("").into()
+        );
+        //使用DirectX捕获屏幕
+        map.insert("enable-directx-capture".to_string(), "Y".to_string());
+        //访问模式，custom：自定义，full：完全控制，view：共享屏幕
+        map.insert("access-mode".to_string(), "full".to_string());
+        //允许远程重启
+        map.insert("enable-remote-restart".to_string(), "Y".to_string());
+        //允许远程修改配置
+        map.insert("allow-remote-config-modification".to_string(), "Y".to_string());
+        //接受远程方式，password：密码，click：点击，password-click：同时使用
+        map.insert("approve-mode".to_string(), "password".to_string());
+        //密码验证方式，use-temporary-password：一次性密码，use-permanent-password：固定密码，use-both-passwords：同时使用
+        map.insert("verification-method".to_string(), "use-permanent-password".to_string());
+        //隐藏连接管理窗口，approve-mode=password，verification-method=use-permanent-password，才可生效，项目中有修复代码
+        map.insert("allow-hide-cm".to_string(), "Y".to_string());
+        //隐藏托盘图标，approve-mode=password，verification-method=use-permanent-password，才可生效，项目中有修复代码
+        map.insert("hide-tray".to_string(), "Y".to_string());
+        RwLock::new(map)
+    };
     pub static ref OVERWRITE_SETTINGS: RwLock<HashMap<String, String>> = Default::default();
-    pub static ref DEFAULT_DISPLAY_SETTINGS: RwLock<HashMap<String, String>> = Default::default();
+    // pub static ref DEFAULT_DISPLAY_SETTINGS: RwLock<HashMap<String, String>> = Default::default();
+    pub static ref DEFAULT_DISPLAY_SETTINGS: RwLock<HashMap<String, String>> = {
+        let mut map = HashMap::new();
+        //显示模式，adaptive：适应窗口，original：原始尺寸，
+        map.insert("view_style".to_string(), "adaptive".to_string());
+        RwLock::new(map)
+    };
     pub static ref OVERWRITE_DISPLAY_SETTINGS: RwLock<HashMap<String, String>> = Default::default();
-    pub static ref DEFAULT_LOCAL_SETTINGS: RwLock<HashMap<String, String>> = Default::default();
+    // pub static ref DEFAULT_LOCAL_SETTINGS: RwLock<HashMap<String, String>> = Default::default();
+    pub static ref DEFAULT_LOCAL_SETTINGS: RwLock<HashMap<String, String>> = {
+        let mut map = HashMap::new();
+        //主题色，dark：深色，light：浅色，system：跟随系统
+        map.insert("theme".to_string(), "light".to_string());
+        //使用D3D渲染
+        map.insert("allow-d3d-render".to_string(), "Y".to_string());
+        //启动时检查软件更新
+        map.insert("enable-check-update".to_string(), "N".to_string());
+        //自动更新
+        map.insert("allow-auto-update".to_string(), "N".to_string());
+        //启用UDP打洞
+        map.insert("enable-udp-punch".to_string(), "Y".to_string());
+        //启用IPv6 P2P连接
+        map.insert("enable-ipv6-punch".to_string(), "Y".to_string());
+        //禁用发现选项卡
+        map.insert("disable-discovery-panel".to_string(), "Y".to_string());
+        //默认提权运行
+        map.insert("pre-elevate-service".to_string(), "Y".to_string());
+        RwLock::new(map)
+    };
     pub static ref OVERWRITE_LOCAL_SETTINGS: RwLock<HashMap<String, String>> = Default::default();
     pub static ref HARD_SETTINGS: RwLock<HashMap<String, String>> = Default::default();
+    pub static ref HARD_SETTINGS: RwLock<HashMap<String, String>> = {
+        let mut map = HashMap::new();
+        //被控默认密码，读取Repository secrets值
+        map.insert(
+            "password".to_string(), 
+            option_env!("DEFAULT_PASSWORD").unwrap_or("").into()
+        );
+        RwLock::new(map)
+    };
     pub static ref BUILTIN_SETTINGS: RwLock<HashMap<String, String>> = Default::default();
+    pub static ref BUILTIN_SETTINGS: RwLock<HashMap<String, String>> = {
+        let mut map = HashMap::new();
+        //默认连接密码，读取Repository secrets值
+        map.insert(
+            "default-connect-password".to_string(), 
+            option_env!("DEFAULT_PASSWORD").unwrap_or("").into()
+        );
+        RwLock::new(map)
+    };
 }
 
 lazy_static::lazy_static! {
@@ -81,10 +181,10 @@ lazy_static::lazy_static! {
     pub static ref APP_HOME_DIR: RwLock<String> = Default::default();
 }
 
-pub const LINK_DOCS_HOME: &str = "https://rustdesk.com/docs/en/";
-pub const LINK_DOCS_X11_REQUIRED: &str = "https://rustdesk.com/docs/en/manual/linux/#x11-required";
+pub const LINK_DOCS_HOME: &str = "https://google.com";
+pub const LINK_DOCS_X11_REQUIRED: &str = "https://google.com/x11-required";
 pub const LINK_HEADLESS_LINUX_SUPPORT: &str =
-    "https://github.com/rustdesk/rustdesk/wiki/Headless-Linux-Support";
+    "https://google.com/Headless-Linux-Support";
 lazy_static::lazy_static! {
     pub static ref HELPER_URL: HashMap<&'static str, &'static str> = HashMap::from([
         ("rustdesk docs home", LINK_DOCS_HOME),
