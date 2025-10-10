@@ -76,26 +76,26 @@ lazy_static::lazy_static! {
     // pub static ref DEFAULT_SETTINGS: RwLock<HashMap<String, String>> = Default::default();
     pub static ref DEFAULT_SETTINGS: RwLock<HashMap<String, String>> = {
         let mut map = HashMap::new();
-        //ID服务器，该配置部分客户端生效，读取Repository secrets值
-        map.insert(
-            "custom-rendezvous-server".to_string(), 
-            option_env!("CUSTOM_RENDEZVOUS_SERVER").unwrap_or("rs.google.com").into()
-        );
-        //中继服务器，读取Repository secrets值
-        map.insert(
-            "relay-server".to_string(), 
-            option_env!("RELAY_SERVER").unwrap_or("rs.google.com").into()
-        );
-        //API服务器，读取Repository secrets值
-        map.insert(
-            "api-server".to_string(), 
-            option_env!("API_SERVER").unwrap_or("http://rs-api.google.com").into()
-        );
-        //KEY，读取Repository secrets值
-        map.insert(
-            "key".to_string(), 
-            option_env!("RS_PUB_KEY").unwrap_or("xxx").into()
-        );
+        // //ID服务器，该配置部分客户端生效，读取Repository secrets值
+        // map.insert(
+        //     "custom-rendezvous-server".to_string(), 
+        //     option_env!("CUSTOM_RENDEZVOUS_SERVER").unwrap_or("rs.google.com").into()
+        // );
+        // //中继服务器，读取Repository secrets值
+        // map.insert(
+        //     "relay-server".to_string(), 
+        //     option_env!("RELAY_SERVER").unwrap_or("rs.google.com").into()
+        // );
+        // //API服务器，读取Repository secrets值
+        // map.insert(
+        //     "api-server".to_string(), 
+        //     option_env!("API_SERVER").unwrap_or("http://rs-api.google.com").into()
+        // );
+        // //KEY，读取Repository secrets值
+        // map.insert(
+        //     "key".to_string(), 
+        //     option_env!("RS_PUB_KEY").unwrap_or("xxx").into()
+        // );
         //PIN解锁，下方有部分修复改功能代码，读取Repository secrets值
         map.insert(
             "unlock_pin".to_string(), 
@@ -116,13 +116,13 @@ lazy_static::lazy_static! {
         //隐藏连接管理窗口，approve-mode=password，verification-method=use-permanent-password，才可生效，项目中有修复代码
         map.insert("allow-hide-cm".to_string(), "Y".to_string());
         //隐藏托盘图标，approve-mode=password，verification-method=use-permanent-password，才可生效，项目中有修复代码
-        map.insert("hide-tray".to_string(), "Y".to_string());
+        // map.insert("hide-tray".to_string(), "Y".to_string());
         //控制是否在GUI上显示UAC/权限警告
         // map.insert("hide-help-cards".to_string(), "Y".to_string());
         // power by me
         // map.insert("hide-powered-by-me".to_string(), "Y".to_string());
         // 质量监视
-        map.insert("show_quality_monitor".to_string(), "Y".to_string());
+        //map.insert("show_quality_monitor".to_string(), "Y".to_string());
 
         RwLock::new(map)
     };
@@ -179,13 +179,43 @@ lazy_static::lazy_static! {
         );
         // power by me
         map.insert("hide-powered-by-me".to_string(), "Y".to_string());
+        map.insert("lang".to_string(), "zh-cn".to_string());
+        // 禁用可访问设备页
+        map.insert("disable-group-panel".to_string(), "Y".to_string());
+        //控制是否在GUI上显示UAC/权限警告
+        map.insert("hide-help-cards".to_string(), "Y".to_string());
         //配置大
         // hide-security-settings / hide-network-settings / 
         // hide-server-settings / hide-proxy-settings / 
         // hide-websocket-settings / hide-remote-printer-settings 
-        //map.insert("hide-security-settings".to_string(), "Y".to_string());
-        //map.insert("hide-network-settings".to_string(), "Y".to_string());
+        map.insert("hide-security-settings".to_string(), "Y".to_string());
+        map.insert("hide-network-settings".to_string(), "Y".to_string());
+        map.insert("hide-server-settings".to_string(), "Y".to_string());
+        map.insert("hide-proxy-settings".to_string(), "Y".to_string());
+        map.insert("hide-websocket-settings".to_string(), "Y".to_string());
         map.insert("hide-remote-printer-settings".to_string(), "Y".to_string());
+
+        //ID服务器，该配置部分客户端生效，读取Repository secrets值
+        map.insert(
+            "custom-rendezvous-server".to_string(), 
+            option_env!("CUSTOM_RENDEZVOUS_SERVER").unwrap_or("rs.google.com").into()
+        );
+        //中继服务器，读取Repository secrets值
+        map.insert(
+            "relay-server".to_string(), 
+            option_env!("RELAY_SERVER").unwrap_or("rs.google.com").into()
+        );
+        //API服务器，读取Repository secrets值
+        map.insert(
+            "api-server".to_string(), 
+            option_env!("API_SERVER").unwrap_or("http://rs-api.google.com").into()
+        );
+        //KEY，读取Repository secrets值
+        map.insert(
+            "key".to_string(), 
+            option_env!("RS_PUB_KEY").unwrap_or("xxx").into()
+        );
+
         RwLock::new(map)
     };
 }
