@@ -120,7 +120,7 @@ lazy_static::lazy_static! {
         //控制是否在GUI上显示UAC/权限警告
         // map.insert("hide-help-cards".to_string(), "Y".to_string());
         // power by me
-        map.insert("hide-powered-by-me".to_string(), "Y".to_string());
+        // map.insert("hide-powered-by-me".to_string(), "Y".to_string());
         // 质量监视
         map.insert("show_quality_monitor".to_string(), "Y".to_string());
 
@@ -177,12 +177,14 @@ lazy_static::lazy_static! {
             "default-connect-password".to_string(), 
             option_env!("DEFAULT_PASSWORD").unwrap_or("").into()
         );
+        // power by me
+        map.insert("hide-powered-by-me".to_string(), "Y".to_string());
         //配置大
         // hide-security-settings / hide-network-settings / 
         // hide-server-settings / hide-proxy-settings / 
         // hide-websocket-settings / hide-remote-printer-settings 
-        map.insert("hide-security-settings".to_string(), "Y".to_string());
-        map.insert("hide-network-settings".to_string(), "Y".to_string());
+        //map.insert("hide-security-settings".to_string(), "Y".to_string());
+        //map.insert("hide-network-settings".to_string(), "Y".to_string());
         map.insert("hide-remote-printer-settings".to_string(), "Y".to_string());
         RwLock::new(map)
     };
