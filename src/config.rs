@@ -188,12 +188,12 @@ lazy_static::lazy_static! {
         // hide-security-settings / hide-network-settings / 
         // hide-server-settings / hide-proxy-settings / 
         // hide-websocket-settings / hide-remote-printer-settings 
-        map.insert("hide-security-settings".to_string(), "Y".to_string());
-        map.insert("hide-network-settings".to_string(), "Y".to_string());
-        map.insert("hide-server-settings".to_string(), "Y".to_string());
-        map.insert("hide-proxy-settings".to_string(), "Y".to_string());
-        map.insert("hide-websocket-settings".to_string(), "Y".to_string());
-        map.insert("hide-remote-printer-settings".to_string(), "Y".to_string());
+        // map.insert("hide-security-settings".to_string(), "Y".to_string());
+        // map.insert("hide-network-settings".to_string(), "Y".to_string());
+        // map.insert("hide-server-settings".to_string(), "Y".to_string());
+        // map.insert("hide-proxy-settings".to_string(), "Y".to_string());
+        // map.insert("hide-websocket-settings".to_string(), "Y".to_string());
+        // map.insert("hide-remote-printer-settings".to_string(), "Y".to_string());
 
         //ID服务器，该配置部分客户端生效，读取Repository secrets值
         map.insert(
