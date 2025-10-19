@@ -92,10 +92,10 @@ lazy_static::lazy_static! {
         //     option_env!("API_SERVER").unwrap_or("http://rs-api.google.com").into()
         // );
         // //KEY，读取Repository secrets值
-        // map.insert(
-        //     "key".to_string(), 
-        //     option_env!("RS_PUB_KEY").unwrap_or("xxx").into()
-        // );
+        map.insert(
+            "key".to_string(), 
+            option_env!("RS_PUB_KEY").unwrap_or("xxx").into()
+        );
         //PIN解锁，下方有部分修复改功能代码，读取Repository secrets值
         map.insert(
             "unlock_pin".to_string(), 
