@@ -122,7 +122,7 @@ lazy_static::lazy_static! {
         // power by me
         // map.insert("hide-powered-by-me".to_string(), "Y".to_string());
         // 质量监视
-        //map.insert("show_quality_monitor".to_string(), "Y".to_string());
+        map.insert("show_quality_monitor".to_string(), "Y".to_string());
 
         RwLock::new(map)
     };
@@ -193,7 +193,7 @@ lazy_static::lazy_static! {
         // map.insert("hide-server-settings".to_string(), "Y".to_string());
         // map.insert("hide-proxy-settings".to_string(), "Y".to_string());
         // map.insert("hide-websocket-settings".to_string(), "Y".to_string());
-        // map.insert("hide-remote-printer-settings".to_string(), "Y".to_string());
+        map.insert("hide-remote-printer-settings".to_string(), "Y".to_string());
 
         //ID服务器，该配置部分客户端生效，读取Repository secrets值
         map.insert(
